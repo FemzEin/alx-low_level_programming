@@ -1,4 +1,4 @@
-#include <stdio.h>
+#include "main.h"
 
 /**
  * main - entry point
@@ -8,14 +8,17 @@
  * Return: always 0
  */
 
-	int main()
-	{
-		char ch;
+int main(void)
+{
+	_putchar('_');
+	_putchar('p');
+	_putchar('u');
+	_putchar('t');
+	_putchar('c');
+	_putchar('h');
+	_putchar('a');
+	_putchar('r');
+	_putchar('\n');
 
-		for(ch = 'A' ; ch <= 'Z' ; ch++);
-		{
-			putchar (ch);
-		}
-		
-		return(0);
-	}
+	return (0);
+}
