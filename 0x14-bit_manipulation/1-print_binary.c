@@ -2,14 +2,29 @@
 #include <stdio.h>
 
 /**
- * print_binary - prints the binary representation of a numnber
- * @n: unsigned long, number to be represented in binary
+ * print_binary - print binary representation of a number
+ * @n: decimal number to print as binary
  */
 
 void print_binary(unsigned long int n)
 {
-	if (n > 1)
-	print_binary(n >> 1);
-	(n & 1) ? _putchar('1');
-	_putchar('0');
+	unsigned long int temp;
+	int shifts;
+
+	if (n == 0)
+	{
+		printf("0");
+		return;
+	}
+
+	for (temp = n, shifts = 0; (temp >>= 1) > 0; shifts++)
+		;
+
+	for (; shifts >= 0; shifts--)
+	{
+		if ((n >> shifts) & 1)
+			printf("1");
+		else
+			printf("0");
+	}
 }
