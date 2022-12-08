@@ -1,53 +1,73 @@
 #include "lists.h"
 
 /**
- * insert_dnodeint_at_idx - insert a new node at given position
- * @h: double pointer to head
- * @idx: index to insert into
- * @n: value to store in new node
- * Return: Address of new node, or NULL if failed
+ * dlistint_len - returns the number of elements in a dlistint_t list
+ * @h: head of doubly linked list
+ *
+ * Return: number of nodes
  */
 
-dlistint_t *insert_dnodeint_at_idx(dlistint_t **h, unsigned int idx, int n)
+size_t dlistint_len(const dlistint_t *h)
 {
-	unsigned int c;
-	dlistint_t *tmp, *prev, *new;
+	int count = 0;
+
+	while (h)
+	{
+		count++;
+		h = h->next;
+	}
+	return (count);
+}
+
+/**
+ * insert_dnodeint_at_index - inserts a new node at a given position
+ * @h: head of linked list
+ * @idx: index
+ * @n: integer value of node
+ *
+ * Return: address of new node, return NULL if fails
+ */
+
+dlistint_t *insert_dnodeint_at_index(dlistint_t **h, unsigned int idx, int n)
+{
+	dlistint_t *new, *temp;
+	size_t length;
+	unsigned int i = 0;
+
+	if (h == NULL)
+		return (NULL);
+	if (idx == 0)
+		return (add_dnodeint(h, n));
+
+	length = dlistint_len(*h);
+	if (idx == length - 1)
+		return (add_dnodeint_end(h, n));
 
 	new = malloc(sizeof(dlistint_t));
 	if (new == NULL)
 		return (NULL);
 	new->n = n;
-	for (tmp = *h, c = 1; tmp && c < idx; c++, tmp = tmp->next)
-		prev = tmp;
-	if (idx == 0)
+	if (*h == NULL)
 	{
-		*h = new; new->prev = NULL;
-		new->next = (tmp == NULL) ? NULL : tmp;
+		new->prev = NULL;
+		new->next = NULL;
+		*h = new;
 		return (new);
 	}
-	if (idx == 1)
+	temp = *h;
+	while (temp)
 	{
-		prev = *h;
-		tmp = ((*h)->next == NULL) ? NULL : (*h)->next;
-		new->prev = prev; new->next = tmp; prev->next = new;
-		if (tmp)
-			tmp->prev = new;
-		return (new);
-	}
-	if (idx == c && tmp == NULL)
-	{
-		if (prev != NULL)
+		if (i == idx)
 		{
-			new->prev = prev; new->next = NULL;
-			prev->next = new; return (new);
+			new->next = temp;
+			new->prev = temp->prev;
+			temp->prev->next = new;
+			temp->prev = new;
+			return (new);
 		}
-		free(new); return (NULL);
+		temp = temp->next;
+		i++;
 	}
-	else if (idx != c && tmp == NULL)
-	{
-		free(new); return (NULL);
-	}
-	prev = tmp; tmp = tmp->next; new->prev = prev;
-	new->next = tmp; prev->next = new; tmp->prev = new;
-	return (new);
+	free(new);
+	return (NULL);
 }
